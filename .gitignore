@@ -1,0 +1,47 @@
+# ---- Build directories ----
+build-*/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+
+# Ninja
+.ninja_deps
+.ninja_log
+
+# ---- CMake user/local config ----
+CMakeUserPresets.json
+
+# ---- Binaries / libs / debug stuff ----
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+mypi
+
+# ---- VS Code ----
+.vscode/*
+# but keep shared debug config
+!.vscode/launch.json
+
+# VS / JetBrains editor junk (just in case)
+.vs/
+.idea/
+*.user
+*.suo
+
+# ---- Dev container noise ----
+# Keep .devcontainer itself (config), ignore logs/temp
+*.log
+*.tmp
+
+# ---- OS / misc cruft ----
+.DS_Store
+Thumbs.db

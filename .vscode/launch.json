@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Remote Debug on Pi (gdbserver)",
+      "type": "cppdbg",
+      "request": "launch",
+
+      // Local copy of the binary (inside the dev container)
+      "program": "${workspaceFolder}/build-rpi-debug/mypi",
+
+      "args": [],
+      "stopAtEntry": false,
+
+      // This is the working directory for the debug session (local side)
+      "cwd": "${workspaceFolder}",
+
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb-multiarch",
+
+      // Pi IP + gdbserver port
+      "miDebuggerServerAddress": "192.168.0.127:1234",
+
+      "externalConsole": false,
+
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

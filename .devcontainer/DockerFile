@@ -1,0 +1,29 @@
+FROM debian:12-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Enable armhf and install all tools + armhf libs
+RUN dpkg --add-architecture armhf \
+    && apt-get update \
+    && apt-get install -y \
+       build-essential \
+       cmake \
+       ninja-build \
+       git \
+       gdb-multiarch \
+       openssh-client \
+       rsync \
+       gcc-arm-linux-gnueabihf \
+       g++-arm-linux-gnueabihf \
+       sudo \
+       pkg-config \
+       gpiod \
+       libgpiod-dev:armhf \
+    && rm -rf /var/lib/apt/lists/*
+
+# Non-root user with passwordless sudo
+RUN useradd -ms /bin/bash vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+USER vscode
+WORKDIR /workspaces

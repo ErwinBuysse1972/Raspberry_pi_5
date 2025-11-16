@@ -1,0 +1,61 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 16
+  },
+  "configurePresets": [
+    {
+      "name": "rpi-debug",
+      "displayName": "Raspberry Pi (Debug)",
+      "description": "Cross-compile for Raspberry Pi (ARM64) - Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-rpi-debug",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain-rpi-armhf.cmake",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PI_USER": "erwinbuysse",
+        "PI_HOST": "192.168.0.127",
+        "PI_PATH": "/home/erwinbuysse/software/cpp/mypiapp/mypi"
+      }
+    },
+    {
+      "name": "rpi-release",
+      "displayName": "Raspberry Pi (Release)",
+      "description": "Cross-compile for Raspberry Pi (ARM64) - Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-rpi-release",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchain-rpi-armhf.cmake",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PI_USER": "erwinbuysse",     
+        "PI_HOST": "192.168.0.127",
+        "PI_PATH": "/home/erwinbuysse/software/cpp/mypiapp/mypi"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "rpi-debug-build",
+      "displayName": "Build (Raspberry Pi Debug)",
+      "configurePreset": "rpi-debug"
+    },
+    {
+      "name": "rpi-release-build",
+      "displayName": "Build (Raspberry Pi Release)",
+      "configurePreset": "rpi-release"
+    },
+    {
+      "name": "rpi-debug-deploy",
+      "displayName": "Build & Deploy (Raspberry Pi Debug)",
+      "configurePreset": "rpi-debug",
+      "targets": [ "deploy" ]
+    },
+    {
+      "name": "rpi-release-deploy",
+      "displayName": "Build & Deploy (Raspberry Pi Release)",
+      "configurePreset": "rpi-release",
+      "targets": [ "deploy" ]
+    }
+  ]
+}

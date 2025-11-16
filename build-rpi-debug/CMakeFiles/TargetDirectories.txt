@@ -1,0 +1,4 @@
+/workspaces/MyPiApp/build-rpi-debug/CMakeFiles/mypi.dir
+/workspaces/MyPiApp/build-rpi-debug/CMakeFiles/deploy.dir
+/workspaces/MyPiApp/build-rpi-debug/CMakeFiles/edit_cache.dir
+/workspaces/MyPiApp/build-rpi-debug/CMakeFiles/rebuild_cache.dir

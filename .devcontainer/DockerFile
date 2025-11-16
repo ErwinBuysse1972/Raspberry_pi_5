@@ -1,29 +1,33 @@
 FROM debian:12-slim
-
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Enable armhf and install all tools + armhf libs
+# Enable armhf + install tools
 RUN dpkg --add-architecture armhf \
     && apt-get update \
     && apt-get install -y \
-       build-essential \
-       cmake \
-       ninja-build \
-       git \
-       gdb-multiarch \
-       openssh-client \
-       rsync \
-       gcc-arm-linux-gnueabihf \
-       g++-arm-linux-gnueabihf \
-       sudo \
-       pkg-config \
-       gpiod \
-       libgpiod-dev:armhf \
+        build-essential \
+        cmake \
+        ninja-build \
+        git \
+        gdb-multiarch \
+        openssh-client \
+        rsync \
+        gcc-arm-linux-gnueabihf \
+        g++-arm-linux-gnueabihf \
+        sudo \
+        pkg-config \
+        gpiod \
+        libgpiod-dev:armhf \
     && rm -rf /var/lib/apt/lists/*
 
-# Non-root user with passwordless sudo
+# Create vscode user with sudo
 RUN useradd -ms /bin/bash vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# ---- Git-aware prompt setup ----
+RUN echo "source /usr/share/git/completion/git-prompt.sh" >> /home/vscode/.bashrc \
+    && echo 'export PS1="\u@\h:\w\$(__git_ps1 \" (%s)\")\\$ "' >> /home/vscode/.bashrc \
+    && chown vscode:vscode /home/vscode/.bashrc
 
 USER vscode
 WORKDIR /workspaces

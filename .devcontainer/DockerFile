@@ -1,33 +1,38 @@
 FROM debian:12-slim
+
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Enable armhf + install tools
+# Enable armhf and install tools + libs
 RUN dpkg --add-architecture armhf \
     && apt-get update \
     && apt-get install -y \
-        build-essential \
-        cmake \
-        ninja-build \
-        git \
-        gdb-multiarch \
-        openssh-client \
-        rsync \
-        gcc-arm-linux-gnueabihf \
-        g++-arm-linux-gnueabihf \
-        sudo \
-        pkg-config \
-        gpiod \
-        libgpiod-dev:armhf \
+       build-essential \
+       cmake \
+       ninja-build \
+       git \
+       gdb-multiarch \
+       openssh-client \
+       rsync \
+       gcc-arm-linux-gnueabihf \
+       g++-arm-linux-gnueabihf \
+       sudo \
+       pkg-config \
+       gpiod \
+       libgpiod-dev:armhf \
+       vim-tiny \
     && rm -rf /var/lib/apt/lists/*
 
-# Create vscode user with sudo
+# Create dev user with passwordless sudo
 RUN useradd -ms /bin/bash vscode \
     && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# ---- Git-aware prompt setup ----
-RUN echo "source /usr/share/git/completion/git-prompt.sh" >> /home/vscode/.bashrc \
-    && echo 'export PS1="\u@\h:\w\$(__git_ps1 \" (%s)\")\\$ "' >> /home/vscode/.bashrc \
-    && chown vscode:vscode /home/vscode/.bashrc
+# Git-aware, colored prompt + vim alias (no heredoc, so Docker is happy)
+RUN echo 'parse_git_branch() {' >> /home/vscode/.bashrc \
+ && echo '  git branch --show-current 2>/dev/null' >> /home/vscode/.bashrc \
+ && echo '}' >> /home/vscode/.bashrc \
+ && echo 'alias vim=vi' >> /home/vscode/.bashrc \
+ && echo 'export PS1="\[\e[1;32m\]\u@\h \[\e[1;34m\]\w\[\e[0;33m\]\$(branch=\$(parse_git_branch); if [ -n \"\$branch\" ]; then printf \" (%s)\" \"\$branch\"; fi)\[\e[0m\]\$ "' >> /home/vscode/.bashrc \
+ && chown vscode:vscode /home/vscode/.bashrc
 
 USER vscode
 WORKDIR /workspaces
